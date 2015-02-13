@@ -18,20 +18,18 @@ changelog.get_issues = (function() {
   }
 
   function getJson(url, id_milestone){
-    $.getJSON(url, function(data){
-      $.each(data, function(index, element){
-        if(element.milestone){
-          if (element.milestone.number == id_milestone) {
-            $('#list-issues').append('**<label class="tags_'+index+'"></label>** - *'+element.title+'. (#'+element.number+')*<br><br>')
-            $.each(element.labels, function(i, labels){
-              if(labels.name === 'bug'){
-                var name = 'fix';
-              }else{
-                name = labels.name;
-              }
-              $('.tags_'+index).append(name)
-            })
-          };
+    $.getJSON(url, function(data) {
+      $.each(data, function(index, element) {
+        if (element.milestone && element.milestone.number == id_milestone) {
+          $('#list-issues').append('**<label class="tags_'+index+'"></label>** - *'+element.title+'. (#'+element.number+')*<br><br>')
+          $.each(element.labels, function(i, labels) {
+            if(labels.name === 'bug') {
+              var name = 'fix';
+            } else {
+              name = labels.name;
+            }
+            $('.tags_'+index).append(name)
+          })
         }
       })
     }).success(function(){
