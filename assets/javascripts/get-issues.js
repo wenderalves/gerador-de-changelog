@@ -21,12 +21,12 @@ changelog.get_issues = (function() {
     $.getJSON(url, function(data) {
       $.each(data, function(index, element) {
         if (element.milestone && element.milestone.number == id_milestone) {
-          $('#list-issues').append('**<label class="tags_'+index+'"></label>** - *'+element.title+'. (#'+element.number+')*<br><br>')
+          $('#list-issues').append('**<label class="tags_'+index+'"></label>** - *'+element.title+'. (#'+element.number+')*<br>')
           $.each(element.labels, function(i, labels) {
             if(labels.name === 'bug') {
-              var name = 'fix';
+              var name = 'FIX';
             } else {
-              name = labels.name;
+              name = labels.name.toUpperCase();
             }
             $('.tags_'+index).append(name)
           })
