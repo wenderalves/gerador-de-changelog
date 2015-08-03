@@ -20,8 +20,9 @@ changelog.get_issues = (function() {
   function getJson(url, id_milestone) {
     $.getJSON(url, function(data) {
       $.each(data, function(index, element) {
-        if (element.milestone && element.milestone.number == id_milestone) {
-          $('#list-issues').append('**<label class="tags_'+index+'"></label>** - *'+element.title+'. (#'+element.number+')*<br>')
+        // if (element.milestone && element.milestone.number == id_milestone) {
+        if (element.milestone) {
+          $('#list-issues').append('**<label class="tags_'+index+'"></label>** - *'+element.title+'. (#'+element.number+')*<br>');
           $.each(element.labels, function(i, labels) {
             if(labels.name === 'bug') {
               var name = 'FIX';
@@ -33,7 +34,7 @@ changelog.get_issues = (function() {
         }
       })
     }).success(function() {
-      $('.loading').remove()
+      $('.loading').remove();
     })
   }
 
