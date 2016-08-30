@@ -5,6 +5,7 @@ changelog.get_issues = (function() {
 
   function init() {
     bindForm();
+    getLastMilestone();
   }
 
   function bindForm() {
@@ -12,16 +13,15 @@ changelog.get_issues = (function() {
       e.preventDefault();
       var url          = $('[name="url"]').val();
       var id_milestone = $('[name="milestone"]').val();
-      getJson(url, id_milestone);
+      getIssues(url, id_milestone);
       $('#list-issues').html('<p class="loading"><img src="https://assets.locaweb.com.br/locastyle/1.2.35/images/ajax-loader.gif"> Gerando changelog, aguarde...</p>');
     })
   }
 
-  function getJson(url, id_milestone) {
+  function getIssues(url, id_milestone) {
     $.getJSON(url, function(data) {
       $.each(data, function(index, element) {
-        // if (element.milestone && element.milestone.number == id_milestone) {
-        if (element.milestone) {
+        if (element.milestone && element.milestone.number == id_milestone) {
           $('#list-issues').append('**<label class="tags_'+index+'"></label>** - *'+element.title+'. (#'+element.number+')*<br>');
           $.each(element.labels, function(i, labels) {
             if(labels.name === 'bug') {
@@ -38,12 +38,15 @@ changelog.get_issues = (function() {
     })
   }
 
+  function getLastMilestone() {
+    $.getJSON('https://api.github.com/repos/locaweb/locawebstyle/milestones', function(data) {
+      $('[name="milestone"]').val(data[0].number);
+    });
+  }
+
   return {
     init: init
   };
-
 }());
 
-$(window).load(function() {
-  changelog.get_issues.init()
-})
+$(window).load(changelog.get_issues.init);
